@@ -1,130 +1,79 @@
-# HackerRank Orchestrate
+# WhatsApp Notification Router
 
-Starter repository for the **HackerRank Orchestrate** 24-hour hackathon.
+An AI-powered message routing system that classifies incoming WhatsApp messages as **notify**, **digest**, or **mute** — built for the HackerRank Orchestrate 24-hour hackathon.
 
-## Message Notification Router
+## Problem
 
-Build an AI-powered system for WhatsApp that decides which messages deserve immediate attention, which should wait, and which should be muted.
+WhatsApp is noisy. A single message stream can contain family chats, society notices, school updates, work messages, business promotions, and scams. Treating every message the same causes two bad outcomes: important messages get missed, and unwanted messages interrupt the user.
 
-The system must reason over multimodal messages, including text messages, image posters/screenshots, and voice notes.
+This system makes personalized routing decisions for each message using context about the user, sender, group, and message history.
 
-WhatsApp is noisy. A user can receive family chats, society notices, school updates, co-worker messages, business account promotions, image posters, voice notes, and scams in the same message stream. Treating every message the same creates two bad outcomes: important messages get missed, and unwanted or risky messages interrupt the user.
+## How It Works
 
-Read [`problem_statement.md`](./problem_statement.md) for the full task spec, input/output schema, allowed values, and submission format.
-
----
-
-## Repository Layout
-
-```text
-.
-├── AGENTS.md                         # Rules for AI coding tools + transcript logging
-├── problem_statement.md              # Full challenge statement
-├── README.md                         # You are here
-└── dataset/
-    ├── messages.csv                  # Messages to route
-    ├── output.csv                    # Blank submission template
-    ├── sample_messages.csv           # Solved examples
-    ├── users.csv                     # User notification behavior
-    ├── groups.csv                    # Group metadata
-    ├── group_members.csv             # User-group relationships
-    ├── business_accounts.csv         # Business sender metadata
-    ├── user_business_history.csv     # User-business history
-    ├── message_history.csv           # Historical messages
-    ├── message_events.csv            # User reactions to historical messages
-    ├── images.csv                    # Image IDs and media file paths
-    ├── voice_notes.csv               # Voice note IDs and media file paths
-    ├── daily_notification_summary.csv
-    └── media/
-        ├── images/
-        └── audio/
+```
+messages.csv + context CSVs
+        │
+        ▼
+  Context Builder
+  (user prefs, group info, business metadata, behavioral history)
+        │
+        ▼
+  LLM Router (Groq — LLaMA 3.3 70B)
+  + Whisper ASR for voice notes
+  + Rule-based safety layer (scam/spam detection)
+        │
+        ▼
+  output.csv (action, message_type, reason, confidence, evidence)
 ```
 
----
+For each message, the system:
+1. Pulls relevant context: user DND window, group role, business verification status, opt-out history
+2. Retrieves historical messages as behavioral evidence
+3. Transcribes voice notes via Whisper
+4. Sends a structured prompt to LLaMA 3.3 70B via Groq API
+5. Validates and sanitizes the JSON output
 
-## What You Need to Build
+## Output Schema
 
-For every row in `dataset/messages.csv`, produce one row in `output.csv` with:
-
-| Column | Meaning |
+| Column | Values |
 |---|---|
-| `message_id` | Incoming message ID |
-| `action` | One of `notify`, `digest`, or `mute` |
-| `message_type` | Best-fit message category |
+| `action` | `notify` / `digest` / `mute` |
+| `message_type` | `personal`, `urgent`, `event`, `payment`, `business_update`, `promotion`, `greeting`, `forward`, `spam`, `scam`, `unknown` |
 | `reason` | Short human-readable explanation |
-| `confidence` | Number from `0` to `1` |
-| `evidence_message_ids` | Historical message IDs used as evidence; write `none` if there is no useful evidence |
+| `confidence` | 0.0 – 1.0 |
+| `evidence_message_ids` | Semicolon-separated historical message IDs, or `none` |
 
-Your system should make personalized decisions using the provided message, user, group, business, media, and historical interaction data.
-For image and voice-note messages, `images.csv` and `voice_notes.csv` only provide file paths; your system should inspect the media files themselves.
+## Tech Stack
 
----
+- **LLM**: LLaMA 3.3 70B via [Groq API](https://groq.com) (fast inference)
+- **ASR**: Whisper Large v3 (voice note transcription)
+- **Data**: pandas for CSV joins and context retrieval
+- **Language**: Python 3.10+
 
-## Suggested Workflow
+## Setup & Run
 
-1. Inspect `dataset/sample_messages.csv` to understand the expected output format.
-2. Load `dataset/messages.csv` and all relevant context files.
-3. Build your routing system using any approach: LLMs, retrieval, rules, classifiers, agents, or hybrids.
-4. Write predictions to `output.csv`.
-5. Evaluate your approach on the solved sample rows before submitting.
+```bash
+pip install -r code/requirements.txt
 
-You may use any language or runtime. Python, JavaScript, and TypeScript are all reasonable choices.
+# Set your Groq API key
+set GROQ_API_KEY=your_key_here        # Windows
+export GROQ_API_KEY=your_key_here     # Linux/macOS
 
----
+python code/main.py
+```
 
-## Requirements
+Output is written to `dataset/output.csv`.
 
-Your solution must:
+## Project Structure
 
-- be runnable from the terminal
-- read the provided files from `dataset/`
-- produce a valid `output.csv`
-- include one prediction for every `message_id` in `dataset/messages.csv`
-- not use organizer-only files or hardcoded labels
-
-If you use API keys or secrets, read them from environment variables. Never hardcode secrets in the repo.
-
----
-
-## Evaluation
-
-Your `output.csv` will be compared against hidden ground-truth labels.
-
-The scoring will consider:
-
-- correctness of `action`
-- correctness of `message_type`
-- usefulness and consistency of `reason`
-- whether `evidence_message_ids` point to relevant historical messages
-- reasonable confidence calibration
-
-Strong systems will combine retrieval, structured metadata, behavioral history, safety checks, OCR/ASR handling, and contextual reasoning.
-
----
-
-## Chat Transcript Logging
-
-This repo includes an [`AGENTS.md`](./AGENTS.md) file for AI coding tools. It asks compatible tools to append conversation summaries to:
-
-| Platform | Path |
-|---|---|
-| macOS / Linux | `$HOME/hackerrank_orchestrate_august26/log.txt` |
-| Windows | `%USERPROFILE%\hackerrank_orchestrate_august26\log.txt` |
-
-Upload this log as your chat transcript at submission time. Do not paste secrets into the chat.
-
----
-
-## Submission
-
-Submit the following files as instructed by HackerRank:
-
-1. **Code zip**: full runnable solution, prompts/configs, README, and any evaluation files.
-2. **Predictions CSV**: final `output.csv` for all rows in `dataset/messages.csv`.
-3. **Chat transcript**: the `log.txt` described above.
-
-Before submitting, confirm:
-
-- `output.csv` has one row per row in `dataset/messages.csv`.
-- `output.csv` has the exact required columns in the exact required order.
-- Your runnable code and setup instructions are included in `code.zip`.
+```
+.
+├── code/
+│   ├── main.py           # Main routing pipeline
+│   ├── requirements.txt
+│   └── evaluation/       # Evaluation scripts
+├── dataset/
+│   ├── output.csv        # Predictions
+│   └── sample_messages.csv
+└── problem_statement.md
+```
