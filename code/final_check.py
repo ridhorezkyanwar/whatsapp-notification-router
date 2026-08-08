@@ -1,0 +1,21 @@
+import pandas as pd
+df = pd.read_csv("dataset/output.csv")
+msgs = pd.read_csv("dataset/messages.csv")
+valid_actions = {"notify","digest","mute"}
+valid_types = {"personal","urgent","event","payment","business_update","promotion","greeting","forward","spam","scam","unknown"}
+print("=== FINAL VALIDATION ===")
+print(f"Rows: {len(df)}/110")
+print(f"All message_ids covered: {set(msgs.message_id)==set(df.message_id)}")
+print(f"No duplicates: {df.message_id.duplicated().sum()==0}")
+print(f"Columns correct: {list(df.columns)==['message_id','action','message_type','reason','confidence','evidence_message_ids']}")
+print(f"Invalid actions: {df[~df.action.isin(valid_actions)].message_id.tolist()}")
+print(f"Invalid types: {df[~df.message_type.isin(valid_types)].message_id.tolist()}")
+print(f"Routing errors left: {df[df.reason.str.contains('Routing error',na=False)].message_id.tolist()}")
+print(f"Confidence range: {df.confidence.min()} - {df.confidence.max()}")
+print(f"NaN anywhere: {df.isna().sum().sum()}")
+print()
+print("Action distribution:")
+print(df.action.value_counts().to_string())
+print()
+print("Message type distribution:")
+print(df.message_type.value_counts().to_string())

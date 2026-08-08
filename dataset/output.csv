@@ -1,111 +1,111 @@
 message_id,action,message_type,reason,confidence,evidence_message_ids
-msg_023,,,,,
-msg_091,,,,,
-msg_090,,,,,
-msg_048,,,,,
-msg_040,,,,,
-msg_075,,,,,
-msg_005,,,,,
-msg_104,,,,,
-msg_069,,,,,
-msg_107,,,,,
-msg_070,,,,,
-msg_003,,,,,
-msg_099,,,,,
-msg_008,,,,,
-msg_092,,,,,
-msg_060,,,,,
-msg_004,,,,,
-msg_030,,,,,
-msg_045,,,,,
-msg_052,,,,,
-msg_009,,,,,
-msg_071,,,,,
-msg_016,,,,,
-msg_065,,,,,
-msg_038,,,,,
-msg_086,,,,,
-msg_014,,,,,
-msg_094,,,,,
-msg_029,,,,,
-msg_105,,,,,
-msg_002,,,,,
-msg_010,,,,,
-msg_078,,,,,
-msg_013,,,,,
-msg_018,,,,,
-msg_044,,,,,
-msg_032,,,,,
-msg_106,,,,,
-msg_006,,,,,
-msg_109,,,,,
-msg_108,,,,,
-msg_019,,,,,
-msg_088,,,,,
-msg_056,,,,,
-msg_027,,,,,
-msg_050,,,,,
-msg_083,,,,,
-msg_063,,,,,
-msg_033,,,,,
-msg_061,,,,,
-msg_020,,,,,
-msg_017,,,,,
-msg_058,,,,,
-msg_026,,,,,
-msg_047,,,,,
-msg_046,,,,,
-msg_042,,,,,
-msg_079,,,,,
-msg_098,,,,,
-msg_037,,,,,
-msg_007,,,,,
-msg_085,,,,,
-msg_001,,,,,
-msg_021,,,,,
-msg_028,,,,,
-msg_012,,,,,
-msg_064,,,,,
-msg_103,,,,,
-msg_031,,,,,
-msg_057,,,,,
-msg_087,,,,,
-msg_067,,,,,
-msg_039,,,,,
-msg_082,,,,,
-msg_066,,,,,
-msg_049,,,,,
-msg_015,,,,,
-msg_051,,,,,
-msg_097,,,,,
-msg_089,,,,,
-msg_053,,,,,
-msg_059,,,,,
-msg_024,,,,,
-msg_072,,,,,
-msg_036,,,,,
-msg_076,,,,,
-msg_055,,,,,
-msg_102,,,,,
-msg_080,,,,,
-msg_093,,,,,
-msg_034,,,,,
-msg_035,,,,,
-msg_101,,,,,
-msg_041,,,,,
-msg_011,,,,,
-msg_110,,,,,
-msg_095,,,,,
-msg_074,,,,,
-msg_073,,,,,
-msg_054,,,,,
-msg_068,,,,,
-msg_100,,,,,
-msg_062,,,,,
-msg_096,,,,,
-msg_043,,,,,
-msg_077,,,,,
-msg_081,,,,,
-msg_025,,,,,
-msg_084,,,,,
-msg_022,,,,,
+msg_023,notify,business_update,verified business update matching user's active order/booking/appointment,0.95,message_0101;message_0102;message_0243
+msg_091,mute,scam,suspicious link for password verification,0.95,message_0238;message_0381
+msg_090,digest,personal,"casual update, no urgency",0.95,none
+msg_048,mute,scam,"Suspicious QR link for payment, user has history of dismissing similar messages",0.93,message_0099;message_0100
+msg_040,digest,forward,user has history of ignoring similar messages,0.95,message_0135;message_0136
+msg_075,notify,business_update,verified business update matching user's active order/booking/appointment,0.95,message_0205;message_0206
+msg_005,digest,event,"low-priority group chat, casual update",0.95,message_0049;message_0065;message_0066
+msg_104,digest,personal,low-priority personal message,0.7,message_0050;message_0115;message_0116
+msg_069,digest,greeting,"forwarded chain message, user has history of dismissing similar messages",0.95,message_0042;message_0079;message_0080
+msg_107,mute,scam,prompt injection and OTP request,0.95,message_0023;message_0045;message_0053
+msg_070,mute,scam,suspicious link asking for OTP,0.95,message_0023;message_0045;message_0053
+msg_003,notify,business_update,verified business update matching user's active order/booking/appointment,0.95,message_0031;message_0061
+msg_099,digest,personal,Coworker shared non-urgent notes for tomorrow's standup.,0.82,message_0227;message_0055
+msg_008,digest,business_update,low-priority business update from verified business with recent product purchase history,0.95,message_0071;message_0072;message_0296
+msg_092,notify,business_update,verified business update matching user's active order/booking/appointment,0.95,none
+msg_060,digest,event,low-priority group chat,0.7,message_0176
+msg_004,notify,business_update,verified business update matching user's active order/booking/appointment,0.95,message_0005;message_0063;message_0064
+msg_030,digest,promotion,"low-priority group chat, forwarded message, and user has history of dismissing similar messages",0.95,message_0025;message_0050;message_0115
+msg_045,digest,event,low-priority group chat,0.7,none
+msg_052,digest,business_update,"low-priority business update, user opted out of promotional messages is not relevant here, but user has history of dismi",0.8,message_0159;message_0160;message_0207
+msg_009,digest,unknown,low-priority group chat,0.7,none
+msg_071,digest,unknown,low-priority group chat,0.7,none
+msg_016,mute,scam,suspicious link and repeated attempts to verify account,0.93,message_0024;message_0087;message_0088
+msg_065,digest,promotion,"low-priority group chat, user opted out is False, and user has opened similar messages from this sender before",0.95,message_0185;message_0186;message_0261
+msg_038,digest,forward,user has history of ignoring similar messages,0.95,message_0131;message_0132
+msg_086,notify,event,verified business update matching user's active order/booking/appointment,0.95,message_0222
+msg_014,digest,promotion,user opted out of promotions from this business,0.95,message_0017;message_0018;message_0083
+msg_094,digest,promotion,low-priority group chat,0.7,none
+msg_029,digest,promotion,Marketplace listing for kurta set; similar posts seen before.,0.83,message_0049;message_0065;message_0095
+msg_105,digest,forward,user has history of ignoring similar messages,0.95,message_0233;message_0373
+msg_002,notify,urgent,urgent personal/work message with direct @mention and hard deadline,0.98,message_0003;message_0041;message_0059
+msg_010,digest,business_update,low-priority business update from verified business with recent history of engagement,0.95,message_0011;message_0075;message_0076
+msg_078,mute,scam,suspicious link and request for bank details,0.95,message_0211;message_0212
+msg_013,digest,promotion,low-priority group chat,0.7,none
+msg_018,mute,spam,"forwarded chain message with suspicious content, user has history of ignoring similar messages",0.95,message_0026;message_0091;message_0092
+msg_044,mute,scam,suspicious link and request for OTP,0.93,message_0143;message_0144
+msg_032,digest,personal,Casual student group request for slides; no deadline or urgency.,0.78,message_0119;message_0120
+msg_106,digest,event,"low-priority group chat, similar message history with sender",0.95,message_0234;message_0376
+msg_006,digest,business_update,"low-priority group chat, user has history of opening similar messages",0.95,message_0029
+msg_109,notify,business_update,verified business update matching user's active order/booking/appointment,1.0,message_0149
+msg_108,mute,scam,suspicious link for PIN verification,0.95,message_0093;message_0094
+msg_019,digest,business_update,"low-priority business update from unverified sender, user has history of dismissing similar messages",0.8,message_0093;message_0094;message_0236
+msg_088,digest,personal,Voice note from marketplace seller; likely follow-up on listing.,0.75,message_0050;message_0115
+msg_056,digest,event,"forwarded chain message, user has history of ignoring similar messages",0.95,message_0013;message_0014;message_0039
+msg_027,digest,promotion,"low-priority group chat, user opted out is False, and user has opened similar messages before",0.95,message_0007;message_0033;message_0109
+msg_050,notify,business_update,Verified business update matching user's active order/booking/appointment,0.95,message_0155;message_0156;message_0279
+msg_083,digest,unknown,"low-priority group chat message, user has history of dismissing similar messages",0.95,message_0219
+msg_063,mute,scam,suspicious link and request for OTP,0.95,message_0181;message_0182
+msg_033,digest,greeting,Family greeting with no urgent action required.,0.82,message_0121;message_0122
+msg_061,digest,greeting,user has history of ignoring similar messages,0.95,message_0042;message_0079;message_0080
+msg_020,digest,unknown,"forwarded chain message, user has history of dismissing similar messages",0.8,message_0049;message_0065;message_0066
+msg_017,mute,spam,suspicious link in forwarded message,0.95,message_0089;message_0090
+msg_058,digest,forward,user has history of ignoring similar messages,0.8,message_0013;message_0014;message_0039
+msg_026,mute,scam,suspicious link for OTP verification,0.95,message_0107;message_0108
+msg_047,digest,event,Society admin notice about lift maintenance; useful but not urgent.,0.84,message_0001;message_0029
+msg_046,mute,scam,suspicious link and request for OTP,0.93,message_0147;message_0148
+msg_042,digest,event,"low-priority group chat, user has history of ignoring similar messages",0.95,message_0057;message_0058;message_0139
+msg_079,mute,scam,suspicious link and request for OTP,0.95,message_0023;message_0045
+msg_098,notify,urgent,urgent personal/work message with direct @mention or hard deadline,0.95,message_0168
+msg_037,notify,urgent,Time-sensitive water tanker alert from trusted society admin.,0.9,message_0001;message_0057
+msg_007,digest,event,low-priority group chat,0.7,none
+msg_085,mute,scam,suspicious link and request for OTP,0.93,message_0221
+msg_001,digest,event,low-priority group chat,0.7,message_0057;message_0058;message_0139
+msg_021,digest,business_update,"low-priority group chat, user has history of dismissing similar messages",0.95,message_0001;message_0029
+msg_028,digest,promotion,user opted out of travel promotions,0.95,message_0034;message_0111;message_0112
+msg_012,digest,forward,user has history of ignoring similar messages,0.95,message_0042;message_0079;message_0080
+msg_064,mute,scam,suspicious link and request for sensitive information,0.92,message_0024;message_0087;message_0088
+msg_103,digest,personal,low-priority personal message from known sender,0.7,message_0049;message_0065;message_0066
+msg_031,notify,event,urgent work message with direct @mention and hard deadline,0.95,message_0117
+msg_057,notify,urgent,urgent personal/work message with direct @mention,0.95,message_0003;message_0041;message_0059
+msg_087,mute,promotion,Voice note in real estate group; user has history of dismissing similar.,0.8,message_0203;message_0204
+msg_067,digest,business_update,"low-priority group chat, user has history of dismissing similar messages",0.95,message_0001;message_0029
+msg_039,notify,urgent,urgent personal/work message with direct @mention,0.95,message_0037;message_0051
+msg_082,digest,event,"low-priority group chat, user has history of dismissing similar messages",0.95,message_0218;message_0380;message_0397
+msg_066,digest,promotion,user opted out of promotions from this business,0.95,message_0187;message_0188
+msg_049,notify,business_update,verified business update matching user's active order/booking/appointment,0.95,message_0153;message_0154;message_0291
+msg_015,mute,scam,suspicious link for OTP verification,0.93,message_0023;message_0045;message_0053
+msg_051,digest,business_update,user opted out of promotional messages,0.95,message_0103;message_0104;message_0157
+msg_097,digest,personal,"low-priority personal message, user has history of dismissing similar messages",0.95,message_0054;message_0167
+msg_089,digest,event,low-priority personal message,0.7,none
+msg_053,digest,business_update,"low-priority group chat, user has dismissed similar messages before",0.8,message_0161;message_0162
+msg_059,mute,scam,suspicious link and request for account number,0.95,message_0023;message_0045;message_0053
+msg_024,digest,business_update,user opted out of promotional messages,0.95,message_0103;message_0104;message_0157
+msg_072,mute,scam,suspicious link for OTP verification,0.93,message_0023;message_0045;message_0053
+msg_036,mute,scam,suspicious link for bank details verification,0.93,message_0127;message_0128;message_0283
+msg_076,digest,business_update,"low-priority business update, user has history of dismissing similar messages",0.8,message_0159;message_0160;message_0207
+msg_055,notify,urgent,urgent personal message with direct request and hard deadline,0.98,message_0165;message_0166
+msg_102,digest,business_update,low-priority business update from a known sender,0.95,message_0003;message_0041;message_0059
+msg_080,digest,unknown,low-priority group chat,0.7,none
+msg_093,digest,business_update,non-urgent message outside DND window,0.7,none
+msg_034,digest,greeting,"forwarded chain message, user has history of ignoring similar messages",0.95,message_0013;message_0014;message_0039
+msg_035,digest,business_update,low-priority business update from verified business outside DND window,0.95,message_0125;message_0126;message_0281
+msg_101,digest,personal,casual update from known sender,0.95,message_0229;message_0268;message_0370
+msg_041,digest,business_update,"low-priority business update, user opted in to survey in the past",0.95,message_0137;message_0138
+msg_011,digest,forward,user has history of ignoring similar messages,0.8,message_0013;message_0014
+msg_110,mute,scam,suspicious link and request for login code,0.95,message_0238;message_0381
+msg_095,mute,scam,suspicious link for account verification,0.95,message_0024;message_0087;message_0088
+msg_074,digest,promotion,user has history of dismissing similar messages from this group and sender,0.95,message_0163;message_0164;message_0203
+msg_073,mute,scam,suspicious link in password verification prompt,0.95,message_0024;message_0087;message_0088
+msg_054,mute,spam,history of ignoring similar messages from this sender/group,0.95,message_0163;message_0164
+msg_068,digest,unknown,low-priority group chat,0.95,message_0191;message_0192
+msg_100,notify,urgent,urgent personal/work message with direct @mention and hard deadline,0.98,message_0117
+msg_062,digest,event,"low-priority group chat, no direct mention or hard deadline, user has history of dismissing similar messages",0.95,message_0001;message_0029
+msg_096,digest,greeting,low-priority personal message,0.7,none
+msg_043,digest,event,"forwarded chain message, user has history of ignoring similar messages",0.95,message_0001;message_0029
+msg_077,notify,event,School admin sent field trip circular requiring consent and ID card.,0.88,message_0051;message_0133
+msg_081,digest,event,low-priority group chat,0.7,message_0217
+msg_025,notify,business_update,verified business update matching user's active order/booking/appointment,0.95,message_0004;message_0105
+msg_084,mute,promotion,user opted out of loan promotions,0.95,message_0220
+msg_022,digest,business_update,"low-priority group chat, user has history of dismissing similar messages",0.95,message_0099;message_0100
