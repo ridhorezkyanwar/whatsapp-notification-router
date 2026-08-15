@@ -18,7 +18,7 @@ messages.csv + context CSVs
   (user prefs, group info, business metadata, behavioral history)
         │
         ▼
-  LLM Router (Groq — LLaMA 3.3 70B)
+  LLM Router (Groq — Qwen3.6 27B)
   + Whisper ASR for voice notes
   + Rule-based safety layer (scam/spam detection)
         │
@@ -45,7 +45,7 @@ For each message, the system:
 
 ## Tech Stack
 
-- **LLM**: LLaMA 3.3 70B via [Groq API](https://groq.com) (fast inference)
+- **LLM**: Qwen3.6 27B via [Groq API](https://groq.com) (fast inference)
 - **ASR**: Whisper Large v3 (voice note transcription)
 - **Data**: pandas for CSV joins and context retrieval
 - **Language**: Python 3.10+
