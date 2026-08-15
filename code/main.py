@@ -1,6 +1,6 @@
 """
 Message Notification Router — HackerRank Orchestrate
-Uses Groq API (llama-3.3-70b-versatile) for routing decisions.
+Uses Groq API (qwen3.6-27b) for routing decisions.
 
 Setup:
     pip install groq pandas pillow openai
