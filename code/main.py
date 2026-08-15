@@ -19,8 +19,8 @@ from groq import Groq
 # ── Config ────────────────────────────────────────────────────────────────────
 DATASET    = Path("dataset")
 OUTPUT     = DATASET / "output.csv"
-TEXT_MODEL    = "llama-3.3-70b-versatile"
-FALLBACK_MODEL = "llama-3.1-8b-instant"   # separate TPD quota
+TEXT_MODEL    = "qwen/qwen3.6-27b"
+FALLBACK_MODEL = "qwen/qwen3.6-27b"
 MAX_TOKENS    = 400
 
 client = Groq(api_key=os.environ.get("GROQ_API_KEY", "").strip())
