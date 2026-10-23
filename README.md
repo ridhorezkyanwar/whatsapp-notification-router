@@ -1,5 +1,15 @@
 # WhatsApp Notification Router
 
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=18&duration=2600&pause=850&color=58A6FF&center=true&vCenter=true&width=520&lines=Build+%E2%80%A2+Test+%E2%80%A2+Improve" alt="Animated banner: Build, Test, Improve" />
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/Groq-F55036?style=flat-square" alt="Groq badge" />
+  <img src="https://img.shields.io/badge/Whisper%20ASR-412991?style=flat-square" alt="Whisper ASR badge" />
+  <img src="https://img.shields.io/badge/AI%20Routing-0A66C2?style=flat-square" alt="AI Routing badge" />
+</p>
+
+
 An AI-powered message routing system that classifies incoming WhatsApp messages as **notify**, **digest**, or **mute** — built for the HackerRank Orchestrate 24-hour hackathon.
 
 ## Problem
