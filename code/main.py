@@ -11,7 +11,7 @@ Run:
     python code/main.py
 """
 
-import os, json, base64, mimetypes
+import os, json, base64, mimetypes, re, time
 from pathlib import Path
 import pandas as pd
 from groq import Groq
@@ -221,13 +221,39 @@ def sanitize(result: dict, ev_ids: list) -> dict:
         "evidence_message_ids": evid,
     }
 def call_groq(system: str, messages: list, model: str) -> str:
-    resp = client.chat.completions.create(
-        model=model,
-        max_tokens=MAX_TOKENS,
-        temperature=0.1,
-        messages=[{"role": "system", "content": system}] + messages,
-        response_format=ROUTING_RESPONSE_FORMAT,
-    )
+    max_rate_limit_retries = 12
+    for attempt in range(max_rate_limit_retries + 1):
+        try:
+            resp = client.chat.completions.create(
+                model=model,
+                max_tokens=MAX_TOKENS,
+                temperature=0.1,
+                messages=[{"role": "system", "content": system}] + messages,
+                response_format=ROUTING_RESPONSE_FORMAT,
+            )
+            break
+        except Exception as error:
+            if getattr(error, "status_code", None) != 429 or attempt >= max_rate_limit_retries:
+                raise
+
+            response = getattr(error, "response", None)
+            headers = getattr(response, "headers", {}) or {}
+            delay = None
+            for header in ("retry-after", "x-ratelimit-reset-tokens"):
+                header_value = headers.get(header)
+                if header_value:
+                    match = re.search(r"\d+(?:\.\d+)?", str(header_value))
+                    if match:
+                        delay = float(match.group(0))
+                        break
+            if delay is None:
+                match = re.search(r"try again in\s+(\d+(?:\.\d+)?)\s*s", str(error), re.IGNORECASE)
+                delay = float(match.group(1)) if match else min(2 ** attempt, 60)
+
+            delay = max(1.0, delay) + 0.25
+            print(f"\nGroq rate limit (429); retry {attempt + 1}/{max_rate_limit_retries} in {delay:.1f}s...", flush=True)
+            time.sleep(delay)
+
     content = resp.choices[0].message.content
     if not content:
         raise RuntimeError("Groq returned an empty response.")
