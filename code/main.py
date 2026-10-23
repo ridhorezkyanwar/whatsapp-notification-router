@@ -11,7 +11,7 @@ Run:
     python code/main.py
 """
 
-import os, json, base64, re, mimetypes
+import os, json, base64, mimetypes
 from pathlib import Path
 import pandas as pd
 from groq import Groq
@@ -22,6 +22,34 @@ DATASET    = ROOT / "dataset"
 OUTPUT     = DATASET / "output.csv"
 TEXT_MODEL    = os.environ.get("GROQ_MODEL", "qwen/qwen3.8-27b").strip()
 MAX_TOKENS    = 400
+
+ROUTING_RESPONSE_FORMAT = {
+    "type": "json_schema",
+    "json_schema": {
+        "name": "message_routing_decision",
+        "strict": True,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "action": {"type": "string", "enum": ["notify", "digest", "mute"]},
+                "message_type": {
+                    "type": "string",
+                    "enum": [
+                        "personal", "urgent", "event", "payment", "business_update",
+                        "promotion", "greeting", "forward", "spam", "scam", "unknown",
+                    ],
+                },
+                "reason": {"type": "string"},
+                "confidence": {"type": "number"},
+                "evidence_message_ids": {"type": "string"},
+            },
+            "required": [
+                "action", "message_type", "reason", "confidence", "evidence_message_ids",
+            ],
+            "additionalProperties": False,
+        },
+    },
+}
 
 client = None
 
@@ -198,6 +226,7 @@ def call_groq(system: str, messages: list, model: str) -> str:
         max_tokens=MAX_TOKENS,
         temperature=0.1,
         messages=[{"role": "system", "content": system}] + messages,
+        response_format=ROUTING_RESPONSE_FORMAT,
     )
     content = resp.choices[0].message.content
     if not content:
@@ -243,11 +272,6 @@ Classify this message for user {row.user_id}."""
             })
         raw = call_groq(SYSTEM, [{"role": "user", "content": content}], TEXT_MODEL)
 
-        raw = re.sub(r"```json\s*|\s*```", "", raw).strip()
-        # Extract JSON object if surrounded by extra text
-        m = re.search(r"\{.*\}", raw, re.DOTALL)
-        if m:
-            raw = m.group(0)
         result = json.loads(raw)
         s = sanitize(result, ev_ids)
         return {"message_id": row.message_id, **s}
