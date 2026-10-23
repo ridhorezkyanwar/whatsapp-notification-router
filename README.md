@@ -1,5 +1,11 @@
 # WhatsApp Notification Router
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Groq-F55036?style=flat-square" alt="Groq badge" />
+  <img src="https://img.shields.io/badge/Whisper%20ASR-412991?style=flat-square" alt="Whisper ASR badge" />
+  <img src="https://img.shields.io/badge/AI%20Routing-0A66C2?style=flat-square" alt="AI Routing badge" />
+</p>
+
 A local Python application for reviewing incoming messages and routing them to `notify`, `digest`, or `mute`. It uses the participant-facing context data and can send text, image, and voice-note content to Groq for AI classification.
 
 ## What the application does
