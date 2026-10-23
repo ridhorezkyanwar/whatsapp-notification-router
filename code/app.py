@@ -28,6 +28,16 @@ def value(row: dict[str, str], key: str, default: str = "") -> str:
     return (row.get(key) or default).strip()
 
 
+def read_groq_api_key() -> str:
+    key = os.environ.get("GROQ_API_KEY", "").strip()
+    if key:
+        return key
+    try:
+        return str(st.secrets.get("GROQ_API_KEY", "")).strip()
+    except Exception:
+        return ""
+
+
 st.set_page_config(page_title="Router Notifikasi", page_icon="🔔", layout="wide")
 st.title("🔔 Router Notifikasi WhatsApp")
 st.caption("Tinjau pesan, keputusan routing, bukti historis, dan media dari dataset lokal.")
@@ -42,7 +52,8 @@ for event in events:
 
 prediction_by_id = {value(row, "message_id"): row for row in predictions}
 missing_ids = {value(row, "message_id") for row in messages} - set(prediction_by_id)
-key_available = bool(os.environ.get("GROQ_API_KEY", "").strip())
+groq_api_key = read_groq_api_key()
+key_available = bool(groq_api_key)
 
 with st.sidebar:
     st.header("Kontrol")
@@ -56,15 +67,17 @@ with st.sidebar:
     st.divider()
     st.subheader("Jalankan model AI")
     if key_available:
-        st.caption("GROQ_API_KEY ditemukan di environment proses ini.")
+        st.caption("GROQ_API_KEY tersedia dengan aman untuk aplikasi ini.")
         run_ai = st.button("Jalankan ulang semua pesan", type="primary", use_container_width=True)
         if run_ai:
             with st.status("Memproses pesan dengan Groq…", expanded=True) as status:
                 try:
+                    child_env = os.environ.copy()
+                    child_env["GROQ_API_KEY"] = groq_api_key
                     completed = subprocess.run(
                         [sys.executable, str(ROOT / "code" / "main.py")],
                         cwd=ROOT,
-                        env=os.environ.copy(),
+                        env=child_env,
                         capture_output=True,
                         text=True,
                         timeout=1800,

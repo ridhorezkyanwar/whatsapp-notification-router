@@ -25,7 +25,7 @@ python -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -r code\requirements.txt
 $env:GROQ_API_KEY = "your-groq-api-key"
-python -m streamlit run code\app.py
+python -m streamlit run code\app.py --server.address 127.0.0.1 --server.port 8502
 ```
 
 Open the local address printed by Streamlit. Keep the terminal open while using the app. To run the batch router without the interface:
@@ -41,10 +41,20 @@ python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r code/requirements.txt
 export GROQ_API_KEY="your-groq-api-key"
-python -m streamlit run code/app.py
+python -m streamlit run code/app.py --server.address 127.0.0.1 --server.port 8502
 ```
 
 The default Groq model is `qwen/qwen3.8-27b`. Set `GROQ_MODEL` in the environment to use another compatible model. Keep API keys outside the repository; the app reads the key from its environment and does not save it.
+
+## Deploy to Streamlit Community Cloud
+
+Push the app files to the GitHub branch you want to deploy. In Streamlit Community Cloud, choose repository `ridhorezkyanwar/whatsapp-notification-router`, branch `main`, and set **Main file path** to `code/app.py` using forward slashes. In **Advanced settings → Secrets**, add:
+
+```toml
+GROQ_API_KEY = "your-groq-api-key"
+```
+
+Do not commit the key to GitHub. The app reads the key from Streamlit Secrets and passes it to the routing process without displaying or saving it. Community Cloud can use `code/requirements.txt` because it is alongside the app entrypoint.
 
 ## Output contract
 
