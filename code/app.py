@@ -99,8 +99,9 @@ with st.sidebar:
                     status.update(label=f"Tidak dapat menjalankan Python: {error}", state="error")
     else:
         st.warning("AI belum bisa dijalankan: GROQ_API_KEY belum tersedia.")
-        st.code('$env:GROQ_API_KEY = "kunci-anda"', language="powershell")
-        st.caption("Kunci hanya dibaca dari environment dan tidak disimpan oleh aplikasi.")
+        st.markdown("**Aktifkan di Streamlit Cloud:** buka **Manage app → Settings → Secrets**, lalu tambahkan:")
+        st.code('GROQ_API_KEY = "kunci-groq-anda"', language="toml")
+        st.caption("Simpan Secrets, lalu pilih Reboot app. Jangan tempelkan API key di chat atau commit ke GitHub.")
 
     st.divider()
     st.subheader("Unduh hasil")
@@ -121,7 +122,7 @@ if not messages:
     st.stop()
 
 if not predictions:
-    st.info("Belum ada prediksi. Atur GROQ_API_KEY di environment lalu jalankan model AI.")
+    st.info("Belum ada prediksi. Tambahkan GROQ_API_KEY di Secrets, lalu jalankan model AI.")
 elif missing_ids:
     st.warning("Output saat ini belum mencakup semua pesan. Jalankan ulang model sebelum submit.")
 
