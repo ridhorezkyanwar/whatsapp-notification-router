@@ -1,79 +1,58 @@
 # WhatsApp Notification Router
 
-An AI-powered message routing system that classifies incoming WhatsApp messages as **notify**, **digest**, or **mute** — built for the HackerRank Orchestrate 24-hour hackathon.
+A local Python application for reviewing incoming messages and routing them to `notify`, `digest`, or `mute`. It uses the participant-facing context data and can send text, image, and voice-note content to Groq for AI classification.
 
-## Problem
+## What the application does
 
-WhatsApp is noisy. A single message stream can contain family chats, society notices, school updates, work messages, business promotions, and scams. Treating every message the same causes two bad outcomes: important messages get missed, and unwanted messages interrupt the user.
+- Browse messages and saved predictions in a local Streamlit interface.
+- Filter by user and routing decision; search message text and IDs.
+- Inspect the selected message, image or audio, model reason, and cited historical evidence.
+- Download the current `dataset/output.csv`.
+- Run the AI router for the complete input file and write one result per message.
 
-This system makes personalized routing decisions for each message using context about the user, sender, group, and message history.
+The current contents of `dataset/output.csv` are shown as saved predictions. The app does not treat them as verified ground truth. Running AI classification requires a Groq account, an API key, internet access, and may use account credits.
 
-## How It Works
+## Setup and run (Windows PowerShell)
 
-```
-messages.csv + context CSVs
-        │
-        ▼
-  Context Builder
-  (user prefs, group info, business metadata, behavioral history)
-        │
-        ▼
-  LLM Router (Groq — Qwen3.6 27B)
-  + Whisper ASR for voice notes
-  + Rule-based safety layer (scam/spam detection)
-        │
-        ▼
-  output.csv (action, message_type, reason, confidence, evidence)
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -r code\requirements.txt
+$env:GROQ_API_KEY = "your-groq-api-key"
+python -m streamlit run code\app.py
 ```
 
-For each message, the system:
-1. Pulls relevant context: user DND window, group role, business verification status, opt-out history
-2. Retrieves historical messages as behavioral evidence
-3. Transcribes voice notes via Whisper
-4. Sends a structured prompt to LLaMA 3.3 70B via Groq API
-5. Validates and sanitizes the JSON output
+Open the local address printed by Streamlit. Keep the terminal open while using the app. To run the batch router without the interface:
 
-## Output Schema
+```powershell
+python code\main.py
+```
 
-| Column | Values |
-|---|---|
-| `action` | `notify` / `digest` / `mute` |
-| `message_type` | `personal`, `urgent`, `event`, `payment`, `business_update`, `promotion`, `greeting`, `forward`, `spam`, `scam`, `unknown` |
-| `reason` | Short human-readable explanation |
-| `confidence` | 0.0 – 1.0 |
-| `evidence_message_ids` | Semicolon-separated historical message IDs, or `none` |
-
-## Tech Stack
-
-- **LLM**: Qwen3.6 27B via [Groq API](https://groq.com) (fast inference)
-- **ASR**: Whisper Large v3 (voice note transcription)
-- **Data**: pandas for CSV joins and context retrieval
-- **Language**: Python 3.10+
-
-## Setup & Run
+## Setup and run (Linux/macOS)
 
 ```bash
-pip install -r code/requirements.txt
-
-# Set your Groq API key
-set GROQ_API_KEY=your_key_here        # Windows
-export GROQ_API_KEY=your_key_here     # Linux/macOS
-
-python code/main.py
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r code/requirements.txt
+export GROQ_API_KEY="your-groq-api-key"
+python -m streamlit run code/app.py
 ```
 
-Output is written to `dataset/output.csv`.
+The default Groq model is `qwen/qwen3.8-27b`. Set `GROQ_MODEL` in the environment to use another compatible model. Keep API keys outside the repository; the app reads the key from its environment and does not save it.
 
-## Project Structure
+## Output contract
 
+The router writes `dataset/output.csv` with exactly these columns:
+
+```text
+message_id,action,message_type,reason,confidence,evidence_message_ids
 ```
-.
-├── code/
-│   ├── main.py           # Main routing pipeline
-│   ├── requirements.txt
-│   └── evaluation/       # Evaluation scripts
-├── dataset/
-│   ├── output.csv        # Predictions
-│   └── sample_messages.csv
-└── problem_statement.md
-```
+
+It reads incoming messages and context from `dataset/`. If routing or media transcription fails, the current output file is kept as-is and the error is shown; the program does not silently label failed messages as `digest`.
+
+## Known limits
+
+- AI predictions are model-generated and are not guaranteed to match hidden evaluation labels.
+- Routing makes one model request per message; voice notes also require transcription. Processing can take time and consume API quota.
+- Image content is sent to the vision-capable model when the image file is present. Voice notes are transcribed through Groq before classification.
+- The Streamlit interface is a local review tool, not a WhatsApp integration or a hosted production service.
