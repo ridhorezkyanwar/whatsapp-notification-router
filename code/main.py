@@ -255,7 +255,7 @@ def call_groq(system: str, messages: list, model: str) -> str:
             time.sleep(delay)
 
     content = resp.choices[0].message.content
-    if not content:
+    if not content or not content.strip():
         raise RuntimeError("Groq returned an empty response.")
     return content.strip()
 
