@@ -157,6 +157,16 @@ python code/final_check.py
 
 This helper validates the CSV shape and values; it does not establish that the AI made semantically correct decisions. I do not claim a passing full-run result unless the validation script and the batch inference have actually been run in the target environment.
 
+### Automated unit tests
+
+Run the offline unit tests from the repository root:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+These tests cover output sanitization, confidence bounds, historical-evidence filtering, strict output-schema requirements, Groq 429 retry behavior, and malformed/empty model responses. Groq calls and retry sleeps are mocked, so unit tests do not require an API key or consume API quota. GitHub Actions runs the tests on pushes and pull requests. Passing unit tests does not prove the router's semantic accuracy on all 110 messages.
+
 ## Privacy and limitations
 
 - Batch inference sends message text and selected context to Groq. Voice-note audio is sent for transcription, and images are sent to the vision-capable model when a matching local file exists.
